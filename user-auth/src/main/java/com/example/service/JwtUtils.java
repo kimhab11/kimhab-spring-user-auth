@@ -1,8 +1,6 @@
-package com.example.kimhabspringuserauth;
+package com.example.service;
 
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SecurityException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

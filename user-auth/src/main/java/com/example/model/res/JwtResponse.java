@@ -1,4 +1,4 @@
-package com.example.kimhabspringuserauth.model.res;
+package com.example.model.res;
 
 
 import java.util.List;

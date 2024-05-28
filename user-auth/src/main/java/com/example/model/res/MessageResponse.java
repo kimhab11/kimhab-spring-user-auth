@@ -1,4 +1,4 @@
-package com.example.kimhabspringuserauth.model.res;
+package com.example.model.res;
 
 public class MessageResponse {
   private String message;

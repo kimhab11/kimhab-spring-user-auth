@@ -1,6 +1,6 @@
-package com.example.kimhabspringuserauth.entity;
+package com.example.entity;
 
-import com.example.kimhabspringuserauth.model.ERole;
+import com.example.model.ERole;
 import lombok.Getter;
 import lombok.Setter;
 

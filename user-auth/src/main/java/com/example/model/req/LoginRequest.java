@@ -1,4 +1,4 @@
-package com.example.kimhabspringuserauth.model.req;
+package com.example.model.req;
 
 import javax.validation.constraints.NotBlank;
 

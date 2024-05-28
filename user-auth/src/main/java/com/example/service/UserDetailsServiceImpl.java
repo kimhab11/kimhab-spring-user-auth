@@ -1,8 +1,7 @@
-package com.example.kimhabspringuserauth.service;
+package com.example.service;
 
-import com.example.kimhabspringuserauth.entity.UserEntity;
-import com.example.kimhabspringuserauth.repo.UserRepository;
-import com.example.kimhabspringuserauth.service.UserDetailsImpl;
+import com.example.entity.UserEntity;
+import com.example.repo.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

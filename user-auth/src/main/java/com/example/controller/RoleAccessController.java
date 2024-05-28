@@ -1,4 +1,4 @@
-package com.example.kimhabspringuserauth.controller;
+package com.example.controller;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.security.access.prepost.PreAuthorize;

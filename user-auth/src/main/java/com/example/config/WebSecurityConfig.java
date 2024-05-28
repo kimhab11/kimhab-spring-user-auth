@@ -1,7 +1,7 @@
-package com.example.kimhabspringuserauth.config;
+package com.example.config;
 
-import com.example.kimhabspringuserauth.model.ERole;
-import com.example.kimhabspringuserauth.service.UserDetailsServiceImpl;
+import com.example.model.ERole;
+import com.example.service.UserDetailsServiceImpl;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
@@ -20,7 +20,11 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(
@@ -28,7 +32,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 //        // jsr250Enabled = true,
         prePostEnabled = true
 )
-public class WebSecurityConfig1 extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String[] AUTH_WHITELIST = {
             "/v2/api-docs",
             "/swagger-resources",
@@ -96,7 +100,8 @@ public class WebSecurityConfig1 extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .cors().and() // enable cors
+                .cors() // enable cors
+                .and()
                 .csrf().disable() // disable CSRF for simplicity
                 .headers().frameOptions().deny()
                 .and()
@@ -122,6 +127,23 @@ public class WebSecurityConfig1 extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         //   web.ignoring().antMatchers("/swagger-ui/**", "/bus/v3/api-docs/**");
+    }
+
+    /**
+     * config CORS with security
+    * */
+    @Bean
+    public CorsFilter corsFilter(){
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowCredentials(true);
+        configuration.addAllowedMethod("*");
+        configuration.addAllowedHeader("*");
+        configuration.addAllowedOrigin("*"); // specific ip
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+
+        return new CorsFilter(source);
     }
 
 }

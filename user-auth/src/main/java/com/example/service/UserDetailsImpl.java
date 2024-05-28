@@ -1,6 +1,6 @@
-package com.example.kimhabspringuserauth.service;
+package com.example.service;
 
-import com.example.kimhabspringuserauth.entity.UserEntity;
+import com.example.entity.UserEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;

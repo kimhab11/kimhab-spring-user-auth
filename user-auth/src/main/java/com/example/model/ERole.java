@@ -1,4 +1,4 @@
-package com.example.kimhabspringuserauth.model;
+package com.example.model;
 
 public enum ERole {
     USER,

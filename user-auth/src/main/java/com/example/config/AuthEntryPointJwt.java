@@ -1,4 +1,4 @@
-package com.example.kimhabspringuserauth.config;
+package com.example.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
