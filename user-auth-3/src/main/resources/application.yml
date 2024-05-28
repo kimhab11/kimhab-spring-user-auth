@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/test-db
+    username: postgres
+    password: 123
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+kimhab:
+  app:
+    jwtSecret: kimhab
+    jwtExpirationMs: 86400000
+
+

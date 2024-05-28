@@ -1,0 +1,2 @@
+rootProject.name = "kimhab-user-auth"
+include 'user-auth', 'user-auth-1' , 'user-auth-3'

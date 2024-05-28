@@ -1,0 +1,36 @@
+buildscript {
+    ext {
+        springBootVersion = '2.7.2'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'idea'
+
+    group = 'com.example'
+    version = '0.0.1-SNAPSHOT'
+
+    repositories {
+        mavenCentral()
+    }
+}
+
+subprojects {
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+
+    dependencies{
+        implementation 'org.springframework.boot:spring-boot-starter'
+    }
+
+    tasks.named('test') {
+        useJUnitPlatform()
+    }
+}

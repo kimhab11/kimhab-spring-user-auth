@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/auth_db
+    username: postgres
+    password: 123
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+jwt-data:
+  jwtSecret: kimhab
+  accessExpirationMn: 840
+  refreshExpirationMn: 850
+
+

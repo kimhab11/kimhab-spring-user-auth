@@ -1,0 +1,18 @@
+# Project exclude paths
+/.gradle/
+/.idea/
+/build/
+/gradle/
+/user-auth/.gradle/
+/user-auth/gradle/
+/user-auth/build/
+/user-auth/build/classes/java/main/
+/user-auth/build/classes/java/test/
+/user-auth-1/.gradle/
+/user-auth-1/gradle/
+/user-auth-1/build/
+/user-auth-1/build/classes/java/main/
+/user-auth-3/.gradle/
+/user-auth-3/gradle/
+/user-auth-3/build/
+/user-auth-3/build/classes/java/main/
