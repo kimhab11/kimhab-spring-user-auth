@@ -21,8 +21,8 @@ public class JwtUtils {
 
     // @Value("${kimhab.app.jwtSecret}")
     private String jwtSecret = "thisisthesecretkeythatusingh256algformytestingproject";
-    @Value("${kimhab.app.jwtExpirationMs}")
-    private int jwtExpirationMs;
+//    @Value("${kimhab.app.jwtExpirationMs}")
+//    private int jwtExpirationMs;
 
     public String generateJwtToken(Authentication authentication) {
 

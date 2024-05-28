@@ -16,7 +16,3 @@ spring:
 #    enabled: true
 #    path: /swagger-ui.html
 #  api-docs.path: /api-docs
-kimhab:
-  app:
-   jwtSecret: kimhab
-   jwtExpirationMs: 86400000
