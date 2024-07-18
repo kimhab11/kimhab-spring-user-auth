@@ -1,8 +1,9 @@
 package org.example.service.imp;
 
 import lombok.extern.slf4j.Slf4j;
+import org.example.config.CustomUserDetails;
 import org.example.model.entity.UserEntity;
-import org.example.model.UserRepository;
+import org.example.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,20 +27,20 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     @Transactional // if not will error or change  @ManyToMany(fetch = FetchType.EAGER) in User Entity for Set<RoleEntity>
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<UserEntity> user = userRepository.findByUsername(username);
+        Optional<UserEntity> userEntityOptional = userRepository.findByUsername(username);
 
-        if (!user.isPresent()) {
+        if (!userEntityOptional.isPresent()) {
             throw new UsernameNotFoundException("User not found with username: " + username);
         }
-        log.info("User: {}", user.get());
+        UserEntity userEntity = userEntityOptional.get();
 
-        var simpleGrantedAuthorities = Collections.singleton(new SimpleGrantedAuthority(user.get().getRoles().toString()));
+
+        var simpleGrantedAuthorities = Collections.singleton(new SimpleGrantedAuthority(userEntity.getRoles().toString()));
         log.info("simpleGrantedAuthorities: {}", simpleGrantedAuthorities);
-        return new org.springframework.security.core.userdetails.User(
-                user.get().getUsername(),
-                user.get().getPassword(),
-                getAuthority(user.get()));
 
+        CustomUserDetails userDetail = new CustomUserDetails(userEntity, getAuthority(userEntity));
+        log.info("User: {}", userEntity);
+        return userDetail;
     }
 
     public Set<SimpleGrantedAuthority> getAuthority(UserEntity user){

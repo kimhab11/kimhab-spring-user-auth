@@ -36,6 +36,10 @@ public class UserEntity {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
+    private LocalDateTime lastLogin;
+
+    private Boolean isEnabled;
+
   //  @ManyToMany(fetch = FetchType.EAGER)
     @ManyToMany(fetch = FetchType.LAZY) // change to EAGER if no @Transactional
     @JoinTable(

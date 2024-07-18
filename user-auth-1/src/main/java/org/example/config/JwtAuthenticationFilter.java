@@ -1,8 +1,7 @@
 package org.example.config;
 
 import lombok.extern.slf4j.Slf4j;
-import org.example.model.UserRepository;
-import org.example.service.imp.UserServiceImp;
+import org.example.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

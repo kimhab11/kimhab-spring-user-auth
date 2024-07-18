@@ -3,7 +3,7 @@ package org.example.service.imp;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.config.JwtTokenProvider;
-import org.example.model.UserRepository;
+import org.example.repo.UserRepository;
 import org.example.model.entity.UserEntity;
 import org.example.model.mapper.UserMapper;
 import org.example.model.req.LoginRequest;
@@ -24,9 +24,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -50,6 +48,15 @@ public class UserServiceImp {
     private final AuthenticationFacade authenticationFacade;
 
     private final UserRepository userRepository;
+
+   // @PostConstruct
+    private void initialUser(){
+        log.info("create user= kimhab , pass= 123");
+        Set<UserRequest.RoleReq> roleReqs= new HashSet<>();
+        roleReqs.add( new UserRequest.RoleReq(1));
+        UserRequest userRequest = new UserRequest("kimhab","123",roleReqs);
+        create(userRequest);
+    }
 
     public JwtAuthenticationResponse logIn(LoginRequest loginRequest) {
         // 1 find user in db

@@ -1,53 +1,60 @@
 package org.example.config;
 
+import lombok.AllArgsConstructor;
+import lombok.ToString;
+import org.example.model.entity.UserEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
 
+@AllArgsConstructor
+@ToString
 public class CustomUserDetails implements UserDetails {
-    private String username;
-    private String password;
-    private Collection<? extends GrantedAuthority> authorities;
+    private UserEntity userEntity;
 
-    public CustomUserDetails(String username, String password, Collection<? extends GrantedAuthority> authorities) {
-        this.username = username;
-        this.password = password;
-        this.authorities = authorities;
+    private Collection<? extends GrantedAuthority> grantedAuthorityList;
+
+    public CustomUserDetails(String username, String password, boolean isEnabled, Collection<? extends GrantedAuthority> authorities) {
+        this.userEntity.setUsername(username);
+        this.userEntity.setIsEnabled(isEnabled);
+        this.userEntity.setPassword(password);
+        this.grantedAuthorityList = authorities;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
+        return grantedAuthorityList;
     }
 
     @Override
     public String getPassword() {
-        return password;
+        return userEntity.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return username;
+        return userEntity.getUsername();
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return userEntity.getIsEnabled();
     }
 }

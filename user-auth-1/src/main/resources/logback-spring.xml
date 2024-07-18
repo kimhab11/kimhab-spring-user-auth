@@ -1,0 +1,15 @@
+<configuration>
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%d{HH:mm:ss.SSS} [%15.15t] |%highlight(%5p)|%-40.40logger{39}| %cyan(%method)-%green(%L): %msg%n</pattern>
+        </layout>
+    </appender>
+
+    <!-- Set the log levels -->
+    <logger name="org.springframework.web" level="info"/>
+    <logger name="org.hibernate" level="ERROR"/>
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+</configuration>

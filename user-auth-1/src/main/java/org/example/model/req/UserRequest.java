@@ -14,6 +14,8 @@ public class UserRequest {
 
     @Setter
     @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class RoleReq{
         private long id;
     }

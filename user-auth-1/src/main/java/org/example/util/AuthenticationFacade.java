@@ -1,6 +1,7 @@
 package org.example.util;
 
-import org.example.model.UserRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.example.repo.UserRepository;
 import org.example.model.entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 
 @Component
+@Slf4j
 public class AuthenticationFacade {
     @Autowired 
     private UserRepository userServiceImp;
@@ -26,6 +28,7 @@ public class AuthenticationFacade {
     public UserEntity getUserEntity(){
         Optional<UserEntity> user = userServiceImp.findByUsername(getUser().getUsername());
         UserEntity userEntity = user.get();
+        log.info("userEntity: {}", userEntity);
         return userEntity;
     }
 }

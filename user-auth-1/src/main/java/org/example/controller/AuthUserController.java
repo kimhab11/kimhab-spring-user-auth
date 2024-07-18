@@ -1,14 +1,12 @@
 package org.example.controller;
 
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.config.JwtTokenProvider;
 import org.example.model.req.UserRequest;
 import org.example.model.res.JwtAuthenticationResponse;
 import org.example.model.req.LoginRequest;
-import org.example.model.entity.UserEntity;
-import org.example.model.UserRepository;
+import org.example.repo.UserRepository;
 import org.example.service.imp.UserServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 
 @RestController
 @RequiredArgsConstructor

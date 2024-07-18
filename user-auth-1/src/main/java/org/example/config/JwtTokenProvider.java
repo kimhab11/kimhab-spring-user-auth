@@ -69,16 +69,6 @@ public class JwtTokenProvider {
                 .getSubject();
     }
 
-    public boolean validateToken(String token) {
-        try {
-            Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
-            return true;
-        } catch (Exception ex) {
-            log.warn(ex.getMessage());
-        }
-        return false;
-    }
-
     public boolean validateJwtToken(String authToken) {
         try {
             Jwts.parser().setSigningKey(secretKey).parseClaimsJws(authToken);
@@ -93,6 +83,8 @@ public class JwtTokenProvider {
             log.error("JWT claims string is empty: {}", e.getMessage());
         } catch (SignatureException e){
             log.error("JWT signature invalid: {}", e.getMessage());
+        } catch (Exception e){
+            log.info(e.getMessage());
         }
 
         return false;
