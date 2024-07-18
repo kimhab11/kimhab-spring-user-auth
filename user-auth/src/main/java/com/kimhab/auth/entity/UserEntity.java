@@ -1,4 +1,4 @@
-package com.example.entity;
+package com.kimhab.auth.entity;
 
 import lombok.Getter;
 import lombok.Setter;

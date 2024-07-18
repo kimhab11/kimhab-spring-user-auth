@@ -1,7 +1,7 @@
-package com.example.config;
+package com.kimhab.auth.config;
 
-import com.example.service.JwtUtils;
-import com.example.service.UserDetailsServiceImpl;
+import com.kimhab.auth.service.JwtUtils;
+import com.kimhab.auth.service.UserDetailsServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,6 +1,6 @@
-package com.example.service;
+package com.kimhab.auth.service;
 
-import com.example.entity.UserEntity;
+import com.kimhab.auth.entity.UserEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @ToString
-public class NoPasswordCustomUserDetails implements UserDetails {
+public class UserDetailsImpl implements UserDetails {
     private static final long serialVersionUID = 1L;
 
     private Long id;
@@ -29,8 +29,8 @@ public class NoPasswordCustomUserDetails implements UserDetails {
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    public NoPasswordCustomUserDetails(Long id, String username, String email, String password,
-                                       Collection<? extends GrantedAuthority> authorities) {
+    public UserDetailsImpl(Long id, String username, String email, String password,
+                           Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -38,16 +38,16 @@ public class NoPasswordCustomUserDetails implements UserDetails {
         this.authorities = authorities;
     }
 
-    public static NoPasswordCustomUserDetails build(UserEntity userEntity) {
+    public static UserDetailsImpl build(UserEntity userEntity) {
         List<GrantedAuthority> authorities = userEntity.getRoleEntities().stream()
                 .map(role -> new SimpleGrantedAuthority("ROLE_"+role.getName().name()))
                 .collect(Collectors.toList());
         log.info("authorities: {}", authorities);
 
-        return new NoPasswordCustomUserDetails(userEntity.getId(),
+        return new UserDetailsImpl(userEntity.getId(),
                 userEntity.getUsername(),
                 userEntity.getEmail(),
-                "",
+                userEntity.getPassword(),
                 authorities);
     }
 
@@ -98,7 +98,7 @@ public class NoPasswordCustomUserDetails implements UserDetails {
             return true;
         if (o == null || getClass() != o.getClass())
             return false;
-        NoPasswordCustomUserDetails user = (NoPasswordCustomUserDetails) o;
+        UserDetailsImpl user = (UserDetailsImpl) o;
         return Objects.equals(id, user.id);
     }
 

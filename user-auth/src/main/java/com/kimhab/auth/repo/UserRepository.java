@@ -1,6 +1,6 @@
-package com.example.repo;
+package com.kimhab.auth.repo;
 
-import com.example.entity.UserEntity;
+import com.kimhab.auth.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

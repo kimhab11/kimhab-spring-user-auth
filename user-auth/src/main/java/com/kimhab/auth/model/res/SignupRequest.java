@@ -1,4 +1,4 @@
-package com.example.model.res;
+package com.kimhab.auth.model.res;
 
 import java.util.Set;
 

@@ -1,4 +1,4 @@
-package com.example.model.req;
+package com.kimhab.auth.model.req;
 
 import javax.validation.constraints.NotBlank;
 

@@ -1,8 +1,8 @@
-package com.example.service;
+package com.kimhab.auth.service;
 
-import com.example.entity.RoleEntity;
-import com.example.model.ERole;
-import com.example.repo.RoleRepository;
+import com.kimhab.auth.model.ERole;
+import com.kimhab.auth.entity.RoleEntity;
+import com.kimhab.auth.repo.RoleRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

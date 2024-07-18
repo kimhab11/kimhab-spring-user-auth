@@ -1,6 +1,6 @@
-package com.example.entity;
+package com.kimhab.auth.entity;
 
-import com.example.model.ERole;
+import com.kimhab.auth.model.ERole;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -1,4 +1,4 @@
-package com.example.model;
+package com.kimhab.auth.model;
 
 public enum ERole {
     USER,

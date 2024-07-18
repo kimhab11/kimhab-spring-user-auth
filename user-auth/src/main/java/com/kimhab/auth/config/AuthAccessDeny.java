@@ -1,4 +1,4 @@
-package com.example.config;
+package com.kimhab.auth.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
