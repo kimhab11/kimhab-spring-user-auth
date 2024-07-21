@@ -8,16 +8,20 @@ import com.auth.model.res.MessageResponse;
 import com.auth.model.res.SignupRequest;
 import com.auth.repo.RoleRepository;
 import com.auth.service.JwtUtils;
+import com.auth.service.NoPasswordCustomUserDetails;
 import com.auth.service.UserDetailsImpl;
 import com.auth.model.res.JwtResponse;
 import com.auth.repo.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,24 +37,43 @@ import java.util.stream.Collectors;
 @Slf4j
 public class AuthController {
     @Autowired
-    AuthenticationManager authenticationManager;
+    private AuthenticationManager authenticationManager;
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    RoleRepository roleRepository;
+    private RoleRepository roleRepository;
 
     @Autowired
-    PasswordEncoder encoder;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    JwtUtils jwtUtils;
+    private JwtUtils jwtUtils;
 
-    @PostMapping("/signin")
+    @PostMapping("/signin/nopass") // kimhab
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
-        Authentication authentication = authenticationManager
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), ""));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            String jwt = jwtUtils.generateJwtToken(authentication);
+
+            NoPasswordCustomUserDetails userDetails = (NoPasswordCustomUserDetails) authentication.getPrincipal();
+            List<String> roles = userDetails.getAuthorities().stream().map(item -> item.getAuthority())
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail(), roles));
+        } catch (BadCredentialsException e) {
+            log.error(e.getMessage());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+    }
+
+    @PostMapping("signin/withpass") // kimhab;string
+    public ResponseEntity<?> signinWithPass(@Valid @RequestBody LoginRequest loginRequest){
+        try {
+                    Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -62,6 +85,11 @@ public class AuthController {
 
         return ResponseEntity
                 .ok(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail(), roles));
+        } catch (BadCredentialsException e) {
+            log.error(e.getMessage());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).
+                    body(new MessageResponse("Error: Username Pass incorrect"));
+        }
     }
 
     @PostMapping("/signup")
@@ -75,8 +103,9 @@ public class AuthController {
         }
 
         // Create new user's account
-        UserEntity userEntity = new UserEntity(signUpRequest.getUsername(), signUpRequest.getEmail(),
-                encoder.encode(signUpRequest.getPassword()));
+        UserEntity userEntity = new UserEntity();
+        userEntity.setEmail(signUpRequest.getEmail());
+        userEntity.setUsername(signUpRequest.getUsername().toLowerCase());
 
         Set<String> strRoles = signUpRequest.getRole();
         log.info("role req: {}", strRoles);
@@ -111,8 +140,15 @@ public class AuthController {
         }
 
         userEntity.setRoleEntities(roleEntities);
-        userRepository.save(userEntity);
 
+        String type = signUpRequest.getType();
+        if (type.equalsIgnoreCase("pass")){
+            userEntity.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
+            userEntity.setType(type);
+        } else {
+            userEntity.setPassword("");
+        }
+        userRepository.save(userEntity);
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 }

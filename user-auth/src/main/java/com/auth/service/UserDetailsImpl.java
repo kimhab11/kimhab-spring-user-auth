@@ -42,13 +42,16 @@ public class UserDetailsImpl implements UserDetails {
         List<GrantedAuthority> authorities = userEntity.getRoleEntities().stream()
                 .map(role -> new SimpleGrantedAuthority("ROLE_"+role.getName().name()))
                 .collect(Collectors.toList());
-        log.info("authorities: {}", authorities);
 
-        return new UserDetailsImpl(userEntity.getId(),
+        var userDetail =  new UserDetailsImpl(userEntity.getId(),
                 userEntity.getUsername(),
                 userEntity.getEmail(),
                 userEntity.getPassword(),
                 authorities);
+
+        log.info("userDetail: {}", userDetail);
+
+        return userDetail;
     }
 
     @Override

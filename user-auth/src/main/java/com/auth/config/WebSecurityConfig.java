@@ -1,6 +1,7 @@
 package com.auth.config;
 
 import com.auth.model.ERole;
+import com.auth.service.NoPasswordUserDetailServiceImp;
 import com.auth.service.UserDetailsServiceImpl;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -19,6 +20,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -44,8 +46,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/swagger-ui/**"
     };
     @Autowired
-    UserDetailsServiceImpl userDetailsService;
+    private NoPasswordUserDetailServiceImp noPasswordUserDetailServiceImp;
 
+    @Autowired
+    private UserDetailsServiceImpl userDetailsService;
     @Autowired
     private AuthEntryPointJwt unauthorizedHandler;
 
@@ -65,45 +69,26 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+      //  return NoOpPasswordEncoder.getInstance();
     }
 
-    // set bearer token and OpenApi info
     @Bean
-    public OpenAPI customOpenAPI() {
-        final String bearerAuth = "bearerAuth";
-        var info = new Info()
-                .title("Test Open API user auth")
-                .version("1.0").contact(new Contact().name("mr kimhab")
-                        .email( "kimhab@mail.mail").url("nomail@gmail.com"))
-                .description("This is my api");
-        var component = new Components()
-                .addSecuritySchemes(bearerAuth, new SecurityScheme()
-                                .name(bearerAuth)
-                                .type(SecurityScheme.Type.HTTP)
-                                .scheme("bearer")
-                                .bearerFormat("JWT"));
-        var bearer = new OpenAPI()
-                .addSecurityItem(new SecurityRequirement().addList(bearerAuth))
-                .components(component)
-                .info(info);
-        return bearer;
-
+    public PasswordEncoder noPassword() {
+         return NoOpPasswordEncoder.getInstance();
     }
-
     @Override
-    public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+    protected void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
         authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+        authenticationManagerBuilder.userDetailsService(noPasswordUserDetailServiceImp).passwordEncoder(noPassword());
     }
-
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .cors() // enable cors
                 .and()
                 .csrf().disable() // disable CSRF for simplicity
-                .headers().frameOptions().deny()
-                .and()
+              //  .headers().frameOptions().deny()
+              //  .and()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
                 .and()
                 .exceptionHandling().accessDeniedHandler(authAccessDeny)
@@ -111,8 +96,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/auth/signin").permitAll()
-                .antMatchers("/api/auth/signup").hasRole(ERole.ADMIN.name())
+                .antMatchers("/api/auth/**").permitAll()
+  //              .antMatchers("/api/auth/signup").hasRole(ERole.ADMIN.name())
                 .antMatchers("/api/user/**").hasRole(ERole.ADMIN.name())
                 .antMatchers(AUTH_WHITELIST).permitAll()
                 .anyRequest().authenticated()
@@ -123,10 +108,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        //   web.ignoring().antMatchers("/swagger-ui/**", "/bus/v3/api-docs/**");
-    }
+//    @Override
+//    public void configure(WebSecurity web) throws Exception {
+//          web.ignoring().antMatchers("/swagger-ui/**", "/bus/v3/api-docs/**");
+//    }
 
     /**
      * config CORS with security

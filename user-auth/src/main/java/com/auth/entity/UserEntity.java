@@ -2,6 +2,7 @@ package com.auth.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -14,6 +15,7 @@ import java.util.Set;
 @Table(name = "auth_users")
 @Getter
 @Setter
+@ToString
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,6 +33,10 @@ public class UserEntity {
     @NotBlank
     @Size(max = 120)
     private String password;
+
+    @NotBlank
+    @Size(max = 50)
+    private String type = "nopass";
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "auth_user_role" , joinColumns = @JoinColumn(name = "user_id"))

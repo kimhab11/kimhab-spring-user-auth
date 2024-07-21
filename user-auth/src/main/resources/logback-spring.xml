@@ -7,7 +7,7 @@
 
     <!-- Set the log levels -->
     <logger name="org.springframework.web" level="info"/>
-    <logger name="org.hibernate" level="ERROR"/>
+    <logger name="org.hibernate.SQL" level="debug"/>
 
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>
